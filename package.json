@@ -1,6 +1,6 @@
 {
   "name": "blobby-fs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A FileSystem storage client for Blobby",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/asilvas/blobby-fs#readme",
   "dependencies": {
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

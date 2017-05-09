@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 import crypto from 'crypto';
+import rimraf from 'rimraf';
 
 export default class BlobbyFS {
   constructor(opts) {
@@ -95,8 +96,21 @@ export default class BlobbyFS {
    */
   remove(fileKey, cb) {
     const absPath = path.resolve(path.join(this.options.path, fileKey));
-    const $this = this;
     fs.unlink(absPath, err => {
+      if (err) {
+        return void cb(err);
+      }
+
+      cb();
+    });
+  }
+
+  /*
+   dir: unique id for storage
+   */
+  removeDirectory(dir, cb) {
+    const absPath = path.resolve(path.join(this.options.path, dir)) + '/';
+    rimraf(absPath, { glob: false }, err => {
       if (err) {
         return void cb(err);
       }
