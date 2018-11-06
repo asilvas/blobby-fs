@@ -10,7 +10,13 @@ export default class BlobbyFS {
     if (!this.options.path) throw new Error('BlobbyFS requires `path` option');
   }
 
-  fetchInfo(fileKey, cb) {
+  fetchInfo(fileKey, opts, cb) {
+    if (typeof opts === 'function') {
+      cb = opts;
+      opts = null;
+    }
+    opts = opts || { };
+
     const absPath = path.resolve(path.join(this.options.path, fileKey));
     fs.stat(absPath, (err, stats) => {
       if (err) return void cb(err);
