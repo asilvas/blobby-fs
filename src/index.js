@@ -65,7 +65,7 @@ export default class BlobbyFS {
     }
     opts = opts || {};
 
-    const { buffer, headers } = file;
+    const { buffer, headers = {} } = file;
     const absPath = path.resolve(path.join(this.options.path, fileKey));
     const $this = this;
     fs.writeFile(absPath, buffer, {}, err => {
@@ -83,16 +83,19 @@ export default class BlobbyFS {
         return void cb(err);
       }
 
-      if (headers && typeof headers.LastModified === 'object') {
+      // compute etag
+      headers.ETag = crypto.createHash('md5').update(buffer).digest('hex');
+
+      if (typeof headers.LastModified === 'object') {
         // if LastModified is set, apply to target object for proper syncing
         fs.utimes(absPath,
           Date.now() / 1000 /* atime: Access Time */,
           headers.LastModified.getTime() / 1000 /* mtime: Modified Time */
-          , cb
+          , () => cb(null, headers)
         );
       } else {
         // otherwise return success now
-        cb();
+        cb(null, headers);
       }
     });
   }
