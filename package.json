@@ -1,6 +1,6 @@
 {
   "name": "blobby-fs",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "A FileSystem storage client for Blobby",
   "main": "src",
   "scripts": {
